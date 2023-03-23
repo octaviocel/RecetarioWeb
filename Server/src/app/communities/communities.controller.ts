@@ -30,7 +30,7 @@ export class CommunitiesController {
   }
 
   @Get()
-  @Roles('ADMINISTRADOR')
+  @Roles('ADMINISTRADOR', 'USER')
   findAll() {
     return this.communitiesService.findAll();
   }

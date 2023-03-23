@@ -20,6 +20,18 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'text' })
+  first_name: string;
+
+  @Column({ type: 'text' })
+  last_name: string;
+
+  @Column({ type: 'date' })
+  birth_date: string;
+
+  @Column({ type: 'text', unique: true })
+  username: string;
+
   @Column({ unique: true })
   email: string;
 
