@@ -18,19 +18,19 @@ export class RolesService {
     return await this.rolesRepository.save(createRoleDto);
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async findAll() {
+    return await this.rolesRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: number) {
+    return await this.rolesRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    return await this.rolesRepository.save(updateRoleDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(id: number) {
+    return (await this.rolesRepository.delete(id)).affected;
   }
 }
