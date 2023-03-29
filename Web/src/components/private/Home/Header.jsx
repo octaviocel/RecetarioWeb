@@ -4,6 +4,7 @@ import LogoLight from "../../../assets/img/logo-light.png";
 import LogoDark from "../../../assets/img/logo-dark.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../services/AuthService";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -26,16 +27,24 @@ const Header = () => {
               <nav className="site-nav">
                 <ul id="site-menu" className="site-menu">
                   <li>
-                    <a href="/">Inicio</a>
+                    <Link to="/">
+                      <a>Inicio</a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/recipes">Recetas</a>
+                    <Link to="recipes">
+                      <a>Recetas</a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/categories">Categor&iacute;as</a>
+                    <Link to="categories">
+                      <a>Categor&iacute;as</a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/communities">Comunidades</a>
+                    <Link to="communities">
+                      <a>Comunidades</a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
