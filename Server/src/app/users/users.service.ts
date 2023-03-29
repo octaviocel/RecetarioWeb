@@ -15,7 +15,9 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return new User(await this.usersRepository.save(createUserDto));
+    return this.usersRepository.create(
+      await this.usersRepository.save(createUserDto),
+    );
   }
 
   async findAll() {
@@ -34,8 +36,10 @@ export class UsersService {
     });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return new User(await this.usersRepository.save(updateUserDto));
+  async update(updateUserDto: UpdateUserDto) {
+    return this.usersRepository.create(
+      await this.usersRepository.save(updateUserDto),
+    );
   }
 
   async remove(id: string) {

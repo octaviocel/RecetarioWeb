@@ -4,6 +4,7 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 
 import { AppModule } from './app.module';
+import { createAdmin, createRoles } from './utils/bootstrap-data';
 
 import { _apiPort } from './utils/constants';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
@@ -27,6 +28,8 @@ async function bootstrap() {
   });
 
   await app.listen(_apiPort);
+  await createRoles();
+  await createAdmin();
   logger.log(`Listen in port: ${_apiPort}`);
 }
 bootstrap();

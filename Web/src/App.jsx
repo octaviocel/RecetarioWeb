@@ -1,34 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useEffect } from "react";
+import SecureLS from "secure-ls";
+
+import { ToastContainer } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { recover } from "./reducers/AuthReducer";
+import { createRoutes } from "./routes/authRoutes";
+import { publicRoutes } from "./routes/publicRoute";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useDispatch();
+  const ls = new SecureLS({ encodingType: "aes" });
+  const currentUser = useSelector((state) => state.auth.user);
+
+  const getUser = () => {
+    const auth = ls.get("_user");
+    const aT = ls.get("_accessToken");
+    const rT = ls.get("_refreshToken");
+
+    if (auth !== "" && aT !== "" && rT !== "") {
+      let user = JSON.parse(auth);
+      dispatch(recover(user));
+    }
+  };
+
+  const getRoutes = () => {
+    if (!currentUser) return publicRoutes;
+    return createRoutes(currentUser.role);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <RouterProvider router={createBrowserRouter(getRoutes())}>
+      <div id="wrapper" className="wrapper">
+        <ToastContainer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    </RouterProvider>
+  );
 }
 
-export default App
+export default App;

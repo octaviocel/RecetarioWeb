@@ -65,9 +65,4 @@ export class User extends BaseEntity {
   @ManyToMany(() => Community, (community) => community.users)
   @JoinTable()
   communities: Community[];
-
-  constructor(partial: Partial<User>) {
-    super();
-    Object.assign(this, partial);
-  }
 }

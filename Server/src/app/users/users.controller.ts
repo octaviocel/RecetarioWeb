@@ -43,10 +43,10 @@ export class UsersController {
     return this.usersService.findOneByKeyword(keyword);
   }
 
-  @Patch(':id')
+  @Patch()
   @Roles('ADMINISTRADOR')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  update(@Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(updateUserDto);
   }
 
   @Delete(':id')

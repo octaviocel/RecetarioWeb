@@ -14,6 +14,7 @@ import { AuthDto } from './dto/auth.dto';
 import { User } from '../users/entities/user.entity';
 
 import { _accessToken, _refreshToken } from 'src/utils/constants';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -49,7 +50,10 @@ export class AuthService {
     await this.updateRefreshToken(newUser.id, tokens.refreshToken);
 
     newUser.refreshToken = tokens.refreshToken;
-    return new User(Object.assign({ ...tokens }, newUser));
+    return plainToInstance(
+      User,
+      Object.assign({ ...tokens }, { user: newUser }),
+    );
   }
 
   async signIn(authDto: AuthDto) {
@@ -70,12 +74,15 @@ export class AuthService {
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     user.refreshToken = tokens.refreshToken;
-    return new User(Object.assign({ ...tokens }, user));
+    return plainToInstance(User, Object.assign({ ...tokens }, { user }));
   }
 
   async logout(id: string) {
-    const resetUserToken = new User({ id: id, refreshToken: null });
-    return this.usersService.update(id, resetUserToken);
+    console.log(id);
+    const resetUserToken = new User();
+    resetUserToken.id = id;
+    resetUserToken.refreshToken = null;
+    return this.usersService.update(resetUserToken);
   }
 
   async refreshTokens(id: string, refreshToken: string) {
@@ -96,17 +103,16 @@ export class AuthService {
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     user.refreshToken = tokens.refreshToken;
-    return new User(Object.assign({ ...tokens }, user));
+    return plainToInstance(User, Object.assign({ ...tokens }, { user }));
   }
 
   async updateRefreshToken(id: string, refreshToken: string) {
     const hashedRefreshToken = await this.hashPassword(refreshToken);
-    const refreshUserToken = new User({
-      id: id,
-      refreshToken: hashedRefreshToken,
-    });
+    const refreshUserToken = new User();
+    refreshUserToken.id = id;
+    refreshUserToken.refreshToken = hashedRefreshToken;
 
-    await this.usersService.update(id, refreshUserToken);
+    await this.usersService.update(refreshUserToken);
   }
 
   async getTokens(user: User) {
