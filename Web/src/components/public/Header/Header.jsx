@@ -47,6 +47,9 @@ const Header = () => {
                   <li>
                     <a href="/recipes">Recetas</a>
                   </li>
+                  <li>
+                    <a href="/communities">Comunidades</a>
+                  </li>
                 </ul>
               </nav>
             </div>
