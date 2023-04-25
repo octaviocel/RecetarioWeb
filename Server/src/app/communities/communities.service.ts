@@ -16,7 +16,7 @@ export class CommunitiesService {
 
   async create(createCommunityDto: CreateCommunityDto) {
     return new Community(
-      await this.communitiesRepository.save(createCommunityDto),
+      //await this.communitiesRepository.save(createCommunityDto),
     );
   }
 
@@ -30,7 +30,7 @@ export class CommunitiesService {
 
   async update(id: number, updateCommunityDto: UpdateCommunityDto) {
     return new Community(
-      await this.communitiesRepository.save(updateCommunityDto),
+      //await this.communitiesRepository.save(updateCommunityDto),
     );
   }
 

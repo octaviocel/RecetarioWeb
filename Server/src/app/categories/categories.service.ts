@@ -16,7 +16,7 @@ export class CategoriesService {
 
   async create(createCategoryDto: CreateCategoryDto) {
     return new Category(
-      await this.categoriesRepository.save(createCategoryDto),
+      //await this.categoriesRepository.save(createCategoryDto),
     );
   }
 
@@ -30,7 +30,7 @@ export class CategoriesService {
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     return new Category(
-      await this.categoriesRepository.save(updateCategoryDto),
+      //await this.categoriesRepository.save(updateCategoryDto),
     );
   }
 

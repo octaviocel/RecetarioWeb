@@ -19,8 +19,5 @@ export class Category extends BaseEntity {
   @OneToMany(() => Recipe, (recipe) => recipe.category)
   recipes: Recipe[];
 
-  constructor(partial: Partial<Category>) {
-    super();
-    Object.assign(this, partial);
-  }
+ 
 }

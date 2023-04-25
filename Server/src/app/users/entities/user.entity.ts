@@ -9,11 +9,13 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 import { Role } from 'src/app/roles/entities/role.entity';
 import { Exclude, Transform } from 'class-transformer';
 import { Community } from 'src/app/communities/entities/community.entity';
+import { Review } from 'src/app/reviews/entities/review.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -65,4 +67,7 @@ export class User extends BaseEntity {
   @ManyToMany(() => Community, (community) => community.users)
   @JoinTable()
   communities: Community[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 }

@@ -22,17 +22,29 @@ import { EmailsModule } from './third-party/emails/emails.module';
 import { CategoriesModule } from './app/categories/categories.module';
 import { CommunitiesModule } from './app/communities/communities.module';
 import { RecipesModule } from './app/recipes/recipes.module';
+import { IngredientsModule } from './app/ingredients/ingredients.module';
+import { InstructionsModule } from './app/instructions/instructions.module';
+import { NutritionModule } from './app/nutrition/nutrition.module';
+import { RecipeIngredientModule } from './app/recipe_ingredient/recipe_ingredient.module';
+import { ReviewsModule } from './app/reviews/reviews.module';
+import { UnitsModule } from './app/units/units.module';
 
 @Module({
   imports: [
     AuthModule,
     RolesModule,
     UsersModule,
-    CategoriesModule,
+    IngredientsModule,
+    InstructionsModule,
+    NutritionModule,
+    UnitsModule,
     CommunitiesModule,
     RecipesModule,
+    CategoriesModule,
     S3Module,
     EmailsModule,
+    RecipeIngredientModule,
+    ReviewsModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -54,4 +66,4 @@ import { RecipesModule } from './app/recipes/recipes.module';
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule { }
