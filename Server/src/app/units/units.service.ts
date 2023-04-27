@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Unit } from './entities/unit.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UnitsService {
-  create(createUnitDto: CreateUnitDto) {
-    return 'This action adds a new unit';
+  constructor(
+    @InjectRepository(Unit)
+    private readonly unitRepository: Repository<Unit>,
+  ) { }
+  async create(createUnitDto: CreateUnitDto) {
+    return this.unitRepository.create(
+      await this.unitRepository.save(createUnitDto)
+    )
   }
 
-  findAll() {
-    return `This action returns all units`;
+  async findAll() {
+    return await this.unitRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unit`;
+  async findOne(id: number) {
+    return await this.unitRepository.findOne({
+      where: { id }
+    })
   }
 
-  update(id: number, updateUnitDto: UpdateUnitDto) {
-    return `This action updates a #${id} unit`;
+  async update(id: number, updateUnitDto: UpdateUnitDto) {
+    return this.unitRepository.create(
+      await this.unitRepository.save(updateUnitDto)
+    )
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} unit`;
+  async remove(id: number) {
+    return await this.unitRepository.delete(id);
   }
 }

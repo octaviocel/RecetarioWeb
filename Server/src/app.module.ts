@@ -53,9 +53,10 @@ import { UnitsModule } from './app/units/units.module';
       username: _dbUser,
       password: _dbPassword,
       database: _dbName,
-      synchronize: true,
-      dropSchema: true,
+      synchronize: _dbSync,
+      dropSchema: _dbSync,
       autoLoadEntities: true,
+      logging: ['error','info'],
     }),
   ],
   providers: [

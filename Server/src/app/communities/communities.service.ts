@@ -12,12 +12,10 @@ export class CommunitiesService {
   constructor(
     @InjectRepository(Community)
     private readonly communitiesRepository: Repository<Community>,
-  ) {}
+  ) { }
 
   async create(createCommunityDto: CreateCommunityDto) {
-    return new Community(
-      //await this.communitiesRepository.save(createCommunityDto),
-    );
+    return await this.communitiesRepository.save(createCommunityDto);
   }
 
   async findAll() {
@@ -29,8 +27,8 @@ export class CommunitiesService {
   }
 
   async update(id: number, updateCommunityDto: UpdateCommunityDto) {
-    return new Community(
-      //await this.communitiesRepository.save(updateCommunityDto),
+    return this.communitiesRepository.create(
+      await this.communitiesRepository.save(updateCommunityDto),
     );
   }
 

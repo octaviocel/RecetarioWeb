@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNutritionDto } from './dto/create-nutrition.dto';
 import { UpdateNutritionDto } from './dto/update-nutrition.dto';
+import { Nutrition } from './entities/nutrition.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class NutritionService {
-  create(createNutritionDto: CreateNutritionDto) {
-    return 'This action adds a new nutrition';
+  constructor(
+    @InjectRepository(Nutrition)
+    private readonly nutritionRepository: Repository<Nutrition>,
+  ) {}
+
+  async create(createNutritionDto: CreateNutritionDto) {
+    return await this.nutritionRepository.save(createNutritionDto);
   }
 
-  findAll() {
-    return `This action returns all nutrition`;
+  async findAll() {
+    return await this.nutritionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} nutrition`;
+  async findOne(id: number) {
+    return await this.nutritionRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateNutritionDto: UpdateNutritionDto) {
-    return `This action updates a #${id} nutrition`;
-  }
+  async update(id: number, updateNutritionDTO: UpdateNutritionDto) {
+    return this.nutritionRepository.create(
+      await this.nutritionRepository.save(updateNutritionDTO)
+    )  }
 
-  remove(id: number) {
-    return `This action removes a #${id} nutrition`;
+  async remove(id: number) {
+    return (await this.nutritionRepository.delete(id)).affected;
   }
 }

@@ -12,12 +12,10 @@ export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoriesRepository: Repository<Category>,
-  ) {}
+  ) { }
 
   async create(createCategoryDto: CreateCategoryDto) {
-    return new Category(
-      //await this.categoriesRepository.save(createCategoryDto),
-    );
+    return await this.categoriesRepository.save(createCategoryDto)
   }
 
   async findAll() {
@@ -29,8 +27,8 @@ export class CategoriesService {
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return new Category(
-      //await this.categoriesRepository.save(updateCategoryDto),
+    return this.categoriesRepository.create(
+      await this.categoriesRepository.save(updateCategoryDto),
     );
   }
 

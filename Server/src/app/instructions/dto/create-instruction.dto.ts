@@ -4,11 +4,12 @@ import { CreateRecipeDto } from "src/app/recipes/dto/create-recipe.dto";
 export class CreateInstructionDto {
     @IsString()
     @IsNotEmpty()
-    type: string;
+    description: string;
 
     @IsNumber()
     @IsNotEmpty()
-    amount: number;
+    step: number;
+
 
     recipe: CreateRecipeDto;
 }

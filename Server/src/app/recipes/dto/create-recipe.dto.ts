@@ -26,7 +26,7 @@ export class CreateRecipeDto {
 
     @IsString()
     @IsNotEmpty()
-    medis_url: string;
+    media_url: string;
 
     @IsString()
     @IsNotEmpty()
