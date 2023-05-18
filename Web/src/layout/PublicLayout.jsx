@@ -1,8 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import Footer from "../components/Footer/Footer";
-import Header from "../components/public/Header/Header";
+import Footer from "@app/components/Footer/";
+import Header from "@app/components/Public/Header";
 
 const PublicLayout = () => {
   return (

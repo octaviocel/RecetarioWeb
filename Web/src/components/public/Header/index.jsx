@@ -1,7 +1,7 @@
 import React from "react";
 
-import LogoLight from "../../../assets/img/logo-light.png";
-import LogoDark from "../../../assets/img/logo-dark.png";
+import LogoLight from "@app/assets/img/logo-light.png";
+import LogoDark from "@app/assets/img/logo-dark.png";
 import Login from "../Home/Login";
 import Register from "../Home/Register";
 
@@ -57,7 +57,8 @@ const Header = () => {
                     <button
                       type="button"
                       className="login-btn"
-                      onClick={() => loginOpen()}
+                      data-toggle="modal"
+                      data-target="#myModal"
                     >
                       <i className="flaticon-profile"></i>Entrar
                     </button>
@@ -88,16 +89,7 @@ const Header = () => {
         </div>
       </div>
 
-      <Login
-        open={openLogin}
-        handleClose={loginClose}
-        handleOpenRegister={registerOpen}
-      />
-      <Register
-        open={openRegister}
-        handleClose={registerClose}
-        handleOpenLogin={loginOpen}
-      />
+      <Login />
     </header>
   );
 };

@@ -1,72 +1,127 @@
 import SecureLS from "secure-ls";
 import { createSlice } from "@reduxjs/toolkit";
-
-import { login, logout, register } from "../services/AuthService";
-
-import { alert } from "../utils/constants";
+import { AuthSlice } from "@app/slices/AuthSlice";
+import { errorToast, successToast } from "@app/utils/constants";
 
 const ls = new SecureLS({ encodingType: "aes" });
-const initialState = {
-  user: null,
-  state: "idle",
-};
 
-const setItems = (user, accessToken, refreshToken) => {
-  ls.set("_accessToken", JSON.stringify(accessToken));
-  ls.set("_refreshToken", JSON.stringify(refreshToken));
+const saveItemsToStorage = (state, action) => {
+  const { user, accessToken } = action.payload;
+  state.user = user;
+
   ls.set("_user", JSON.stringify(user));
+  ls.set("_accessToken", JSON.stringify(accessToken));
+  ls.set("_refreshToken", JSON.stringify(user.refreshToken));
 };
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    user: null,
+  },
   reducers: {
-    recover: (state, action) => {
-      state.user = action.payload;
+    setCredentials: (state, action) => {
+      saveItemsToStorage(state, action);
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(register.fulfilled, (state, action) => {
-        const { user, accessToken, refreshToken } = action.payload;
-        setItems(user, accessToken, refreshToken);
+    builder.addMatcher(
+      AuthSlice.endpoints.login.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+        successToast("Bienvenido de vuelta");
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.login.matchRejected,
+      (state, action) => {
+        errorToast(action.payload?.data);
+      }
+    );
 
-        state.state = "success";
-        state.user = user;
-      })
-      .addCase(register.rejected, (state, action) => {
-        console.log(action.error);
-        alert("error", action.error?.message || "Error");
-        state.state = "failed";
-      });
+    builder.addMatcher(
+      AuthSlice.endpoints.signUp.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.signUp.matchRejected,
+      (state, action) => {
+        errorToast(action.payload?.data);
+      }
+    );
 
-    builder
-      .addCase(login.fulfilled, (state, action) => {
-        const { user, accessToken, refreshToken } = action.payload;
-        setItems(user, accessToken, refreshToken);
+    builder.addMatcher(
+      AuthSlice.endpoints.verify.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+        successToast("Cuenta verificada");
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.verify.matchRejected,
+      (state, action) => {
+        errorToast(action.payload?.data);
+      }
+    );
 
-        state.state = "success";
-        state.user = user;
-      })
-      .addCase(login.rejected, (state, action) => {
-        alert("error", action.error?.message || "Error");
-        state.state = "failed";
-      });
-
-    builder
-      .addCase(logout.fulfilled, (state) => {
+    builder.addMatcher(
+      AuthSlice.endpoints.resendCode.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+        successToast("Se envió un nuevo código a tu correo");
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.resendCode.matchRejected,
+      (state, action) => {
         state.user = null;
-        state.state = "idle";
-        ls.removeAll();
-      })
-      .addCase(logout.rejected, (state, action) => {
+        errorToast(action.payload?.data);
+      }
+    );
+
+    builder.addMatcher(
+      AuthSlice.endpoints.findProfile.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+        successToast("Bienvenido de vuelta");
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.findProfile.matchRejected,
+      (state, action) => {
         state.user = null;
-        state.state = "idle";
         ls.removeAll();
-        alert("error", action.error?.message || "Error");
-      });
+        errorToast(action.payload?.data);
+      }
+    );
+
+    builder.addMatcher(
+      AuthSlice.endpoints.updateProfile.matchFulfilled,
+      (state, action) => {
+        saveItemsToStorage(state, action);
+        successToast("Perfil actualizado");
+      }
+    );
+    builder.addMatcher(
+      AuthSlice.endpoints.updateProfile.matchRejected,
+      (state, action) => {
+        errorToast(action.payload?.data);
+      }
+    );
+
+    builder.addMatcher(AuthSlice.endpoints.logout.matchFulfilled, (state) => {
+      state.user = null;
+      ls.removeAll();
+    });
+    builder.addMatcher(AuthSlice.endpoints.logout.matchRejected, (state) => {
+      state.user = null;
+      ls.removeAll();
+    });
   },
 });
 
-export const { recover } = authSlice.actions;
+export const { setCredentials } = authSlice.actions;
+
 export default authSlice.reducer;

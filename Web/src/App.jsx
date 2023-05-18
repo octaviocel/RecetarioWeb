@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import SecureLS from "secure-ls";
 
 import { ToastContainer } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { recover } from "./reducers/AuthReducer";
 import { createRoutes } from "./routes/authRoutes";
 import { publicRoutes } from "./routes/publicRoute";
+import { useFindProfileMutation } from "./slices/AuthSlice";
 
 function App() {
-  const dispatch = useDispatch();
   const ls = new SecureLS({ encodingType: "aes" });
   const currentUser = useSelector((state) => state.auth.user);
+  const [findProfile] = useFindProfileMutation();
 
   const getUser = () => {
     const auth = ls.get("_user");
@@ -21,7 +21,7 @@ function App() {
 
     if (auth !== "" && aT !== "" && rT !== "") {
       let user = JSON.parse(auth);
-      dispatch(recover(user));
+      findProfile(user.id);
     }
   };
 

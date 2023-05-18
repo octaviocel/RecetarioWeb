@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { handleBack } from "@/reducers/ModalReducer";
+import { handleBack } from ""@app/reducers/ModalReducer";
 
 import { grey, red } from "@mui/material/colors";
 import { BrokenImageRounded, PhotoCameraRounded } from "@mui/icons-material";
@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ImagenesService from "@/services/FilesService";
+import ImagenesService from ""@app/services/FilesService";
 
 const InputImage = ({
   item,
